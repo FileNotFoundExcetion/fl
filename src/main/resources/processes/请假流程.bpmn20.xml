@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef" exporter="Flowable Open Source Modeler" exporterVersion="6.7.2">
+  <process id="stuLeave" name="请假流程" isExecutable="true">
+    <documentation>请求的流程模型</documentation>
+    <startEvent id="startEvent1" name="开始" flowable:formFieldValidation="true"></startEvent>
+    <userTask id="apply" name="请假申请" flowable:assignee="${studentName}" flowable:formFieldValidation="true">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="teacherPass" name="辅导员审批" flowable:candidateGroups="a" flowable:formFieldValidation="true"></userTask>
+    <exclusiveGateway id="judgeTask" name="判断是否大于2天"></exclusiveGateway>
+    <endEvent id="sid-7EDEAB60-F277-4EBB-916A-D0841F7EE58F" name="结束"></endEvent>
+    <userTask id="principalpass" name="院长审批" flowable:candidateGroups="b" flowable:formFieldValidation="true"></userTask>
+    <sequenceFlow id="sid-21B439A5-697A-4221-9281-4C655BA40564" name="申请流程" sourceRef="apply" targetRef="teacherPass"></sequenceFlow>
+    <sequenceFlow id="flowBeg" name="流程开始" sourceRef="startEvent1" targetRef="apply"></sequenceFlow>
+    <sequenceFlow id="judgeLess" name="小于2天" sourceRef="judgeTask" targetRef="sid-7EDEAB60-F277-4EBB-916A-D0841F7EE58F">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${day<=2}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="judgeMore" name="大于2天" sourceRef="judgeTask" targetRef="principalpass">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${day>2}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="presidentPassFlow" name="通过" sourceRef="principalpass" targetRef="sid-7EDEAB60-F277-4EBB-916A-D0841F7EE58F">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outcome=='通过'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="presidentNotPassFlow" name="驳回" sourceRef="principalpass" targetRef="apply">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outcome=='驳回'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="teacherNotPassFlow" name="驳回" sourceRef="teacherPass" targetRef="apply">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outcome=='驳回'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="teacherPassFlow" name="通过" sourceRef="teacherPass" targetRef="judgeTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outcome=='通过'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_key123456789">
+    <bpmndi:BPMNPlane bpmnElement="key123456789" id="BPMNPlane_key123456789">
+      <bpmndi:BPMNShape bpmnElement="startEvent1" id="BPMNShape_startEvent1">
+        <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="174.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="apply" id="BPMNShape_apply">
+        <omgdc:Bounds height="80.0" width="100.0" x="238.5" y="149.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="teacherPass" id="BPMNShape_teacherPass">
+        <omgdc:Bounds height="80.0" width="100.0" x="420.0" y="149.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="judgeTask" id="BPMNShape_judgeTask">
+        <omgdc:Bounds height="40.0" width="40.0" x="615.0" y="169.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-7EDEAB60-F277-4EBB-916A-D0841F7EE58F" id="BPMNShape_sid-7EDEAB60-F277-4EBB-916A-D0841F7EE58F">
+        <omgdc:Bounds height="28.0" width="28.0" x="801.5" y="175.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="principalpass" id="BPMNShape_principalpass">
+        <omgdc:Bounds height="80.0" width="100.0" x="584.9999912828208" y="284.9999957531691"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="presidentNotPassFlow" id="BPMNEdge_presidentNotPassFlow" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="584.999991282527" y="324.9999957531691"></omgdi:waypoint>
+        <omgdi:waypoint x="288.5" y="324.9999957531691"></omgdi:waypoint>
+        <omgdi:waypoint x="288.5" y="228.95000000000002"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="judgeLess" id="BPMNEdge_judgeLess" flowable:sourceDockerX="20.5" flowable:sourceDockerY="20.5" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="654.4974805122494" y="189.44707520891365"></omgdi:waypoint>
+        <omgdi:waypoint x="801.5000506350434" y="189.0387499101535"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="judgeMore" id="BPMNEdge_judgeMore" flowable:sourceDockerX="20.5" flowable:sourceDockerY="20.5" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="635.4296283960095" y="208.51312113996187"></omgdi:waypoint>
+        <omgdi:waypoint x="635.1474108317313" y="284.9999957531691"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="teacherNotPassFlow" id="BPMNEdge_teacherNotPassFlow" flowable:sourceDockerX="67.21700380163787" flowable:sourceDockerY="5.494325309861807" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="487.2170038016379" y="149.0"></omgdi:waypoint>
+        <omgdi:waypoint x="487.2170038016379" y="71.0"></omgdi:waypoint>
+        <omgdi:waypoint x="288.5" y="71.0"></omgdi:waypoint>
+        <omgdi:waypoint x="288.5" y="149.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-21B439A5-697A-4221-9281-4C655BA40564" id="BPMNEdge_sid-21B439A5-697A-4221-9281-4C655BA40564" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="338.45000000000005" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="189.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flowBeg" id="BPMNEdge_flowBeg" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="119.9499994571702" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="238.5" y="189.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="presidentPassFlow" id="BPMNEdge_presidentPassFlow" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="684.9499912828207" y="324.9999957531691"></omgdi:waypoint>
+        <omgdi:waypoint x="815.5" y="324.9999957531691"></omgdi:waypoint>
+        <omgdi:waypoint x="815.5" y="202.94992931275885"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="teacherPassFlow" id="BPMNEdge_teacherPassFlow" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="519.9499999998898" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="615.0" y="189.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
