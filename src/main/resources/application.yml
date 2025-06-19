@@ -9,7 +9,7 @@ spring:
 flowable:
   # 关闭异步，不关闭历史数据的插入就是异步的，会在同一个事物里面，无法回滚
   # 开发可开启会提高些效率，上线需要关闭
-  async-executor-activate: true
+  async-executor-activate: false
   #  将databaseSchemaUpdate设置为true。当Flowable发现库与数据库表结构不一致时，会自动将数据库表结构升级至新版本。
   database-schema-update: true
   idm:
@@ -19,8 +19,9 @@ flowable:
         password: admin
         first-name: Flowable
         last-name: Admin
-
-
+logging:
+  level:
+    org.flowable: debug
 
 
 
