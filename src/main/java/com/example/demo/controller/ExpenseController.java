@@ -50,7 +50,7 @@ public class ExpenseController {
         map.put("descption", descption);
         //Expense是我们绘制流程图时自己所填写的key
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("Expense", map);
-        return "提交成功.流程Id为：" + processInstance.getId();
+        return "提交成功.流程Id为:" + processInstance.getId();
 
     }
 

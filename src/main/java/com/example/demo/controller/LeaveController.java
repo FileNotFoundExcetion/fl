@@ -43,9 +43,10 @@ public class LeaveController {
         log.info("流程实例ID：" + processInstance.getId());
         //完成申请任务
         Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+        log.info("任务ID：" + task.getId());
         taskService.complete(task.getId());
         //此处id为流程id
-        return new Result(true,"提交成功.流程Id为：" + processInstance.getId()) ;
+        return new Result(true,"提交成功.流程Id为:" + processInstance.getId()) ;
     }
 
     @GetMapping("teacherList")
