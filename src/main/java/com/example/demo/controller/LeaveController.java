@@ -4,6 +4,7 @@ import com.example.demo.util.Result;
 import com.example.demo.vo.TaskVO;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.*;
 import org.flowable.engine.runtime.Execution;
@@ -58,7 +59,7 @@ public class LeaveController {
             return new TaskVO(task.getId(), variables.get("day").toString(), variables.get("studentName").toString());
         }).collect(Collectors.toList());
         log.info("任务列表：" + tasks);
-        if (tasks == null || tasks.size() == 0) {
+        if (CollectionUtils.isEmpty(tasks)) {
             return new Result(false,"没有任务");
         }
         return new Result(true,"获取成功",taskVOList);
