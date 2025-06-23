@@ -6,6 +6,7 @@ import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.task.api.Task;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,5 +39,19 @@ class DemoApplicationTests {
         Map<String, Object> map = new HashMap<>();
         map.put("auditStatus",2);
         taskService.complete("8faed3f3-4da4-11f0-9464-782b46680fdd",map);
+    }
+
+    @Test
+    void test1() {
+//        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+//                .processInstanceId("xx")
+//                .active()
+//                .singleResult();
+//        System.out.println(processInstance);
+        Task task = taskService.createTaskQuery()
+                .processInstanceId("xx")
+                .active()
+                .singleResult();
+        System.out.println(task);
     }
 }
